@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="${packageName}.mapper.${ClassName}Mapper">
+
+    <resultMap type="${packageName}.domain.${ClassName}PO" id="BaseResultMap">
+        <id column="${pkColumn.columnName}" property="${pkColumn.javaField}" jdbcType="${pkColumn.jdbcType}"/>
+        #foreach ($column in $columns)
+        <result column="${column.columnName}" property="${column.javaField}" jdbcType="${column.jdbcType}"/>
+        #end
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ${pkColumn.columnName}#if($columns.size() != 0),#end
+        #foreach($column in $columns)
+        $column.columnName#if($foreach.count != $columns.size()),#end
+        #end
+    </sql>
+
+    <!--查询单个-->
+    <select id="selectByPrimaryKey" parameterType="${pkColumn.javaType}" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ${tableName}
+        where ${pkColumn.columnName} = #{${pkColumn.javaField},jdbcType=${pkColumn.jdbcType}}
+    </select>
+
+    <!--查询指定数据集合,查询条件为EQ-->
+    <select id="listByEqualCondition" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ${tableName}
+        <where>
+        #foreach($column in $columns)
+            <if test="${column.javaField} != null #if($column.javaType ==
+                'String' ) and $column.javaField.trim() != ''#end">
+                and ${column.columnName} = #{${column.javaField}}
+            </if>
+        #end
+        </where>
+
+    </select>
+
+    <!--查查询指定数据集合,查询条件为Like-->
+    <select id="listByLikeCondition" resultMap="BaseResultMap">
+        select
+            <include refid="Base_Column_List"/>
+        from ${tableName}
+        <where>
+        #foreach($column in $columns)
+            <if test="${column.javaField} != null #if($column.javaType ==
+                'String' ) and $column.javaField.trim() != ''#end">
+                and ${column.columnName} like concat('%', #{$column.javaField}, '%')
+            </if>
+        #end
+        </where>
+    </select>
+
+    <!--新增数据，所有列-->
+    <insert id="insert" parameterType="${packageName}.domain.${ClassName}PO">
+        insert into ${tableName}
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+        #foreach($column in $columns)
+            $column.columnName#if($foreach.count != $columns.size()),#end
+        #end
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+        #foreach($column in $columns)
+            #{$column.javaField,jdbcType=$column.jdbcType}#if($foreach.count != $columns.size()),#end
+        #end
+        </trim>
+    </insert>
+
+    <!--新增数据，字段null不插入-->
+    <insert id="insertSelective">
+        insert into ${tableName}
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+        #foreach($column in $columns)
+            <if test="$column.javaField != null#if($column.javaType ==
+                'String') and $column.javaField != ''#end">
+                $column.columnName#if($foreach.count != $columns.size()),#end
+            </if>
+        #end
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+        #foreach($column in $columns)
+            <if test="$column.javaField != null#if($column.javaType ==
+                'String') and $column.javaField != ''#end">
+                #{$column.javaField,jdbcType=$column.jdbcType}#if($foreach.count != $columns.size()),#end
+            </if>
+        #end
+        </trim>
+    </insert>
+
+    <!--批量新增-->
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into ${tableName}
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+        #foreach($column in $columns)
+            $column.columnName#if($foreach.count != $columns.size()),#end
+        #end
+        </trim>
+        values
+        <foreach item="item" index="index" collection="${className}POList" separator=",">
+            (
+        #foreach($column in $columns)
+            #{item.$column.javaField}#if($foreach.count != $columns.size()),#end
+        #end
+            )
+        </foreach>
+    </insert>
+
+    <!--通过主键修改数据,未传数据字段不更新-->
+    <update id="updateByPrimaryKeySelective" parameterType="${packageName}.domain.${ClassName}PO">
+        update ${tableName}
+        <trim prefix="SET" suffixOverrides=",">
+        #foreach($column in $columns)
+            #if($column.columnName != $pkColumn.columnName)
+            <if test="$column.javaField != null#if($column.javaType =='String') and $column.javaField != ''#end">
+                $column.columnName = #{$column.javaField,jdbcType=$column.jdbcType}#if($foreach.count != $columns.size()),#end
+            </if>
+             #end
+        #end
+        </trim>
+        where ${pkColumn.columnName} = #{${pkColumn.javaField},jdbcType=${pkColumn.jdbcType}}
+    </update>
+
+    <!--通过主键修改数据,未传数据字段,仍然更新-->
+    <update id="updateByPrimaryKey" parameterType="${packageName}.domain.${ClassName}PO">
+        update ${tableName}
+        <trim prefix="SET" suffixOverrides=",">
+        #foreach($column in $columns)
+        #if($column.columnName != $pkColumn.columnName)
+            $column.columnName = #{$column.javaField,jdbcType=$column.jdbcType}#if($foreach.count != $columns.size()),#end
+        #end
+        #end
+        </trim>
+        where ${pkColumn.columnName} = #{${pkColumn.javaField},jdbcType=${pkColumn.jdbcType}}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteByPrimaryKey" parameterType="${pkColumn.javaType}">
+        delete from ${tableName}
+        where ${pkColumn.columnName} = #{${pkColumn.javaField},jdbcType=${pkColumn.jdbcType}}
+    </delete>
+
+    <!--通过主键集合批量删除-->
+    <delete id="deleteBatchByPrimaryKeys" parameterType="java.util.List">
+        delete from ${tableName} where id in
+        <foreach item="id" collection="${pkColumn.javaField}s" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

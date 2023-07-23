@@ -1,0 +1,26 @@
+{
+    "projectName":"gen-v3",
+    "tableName": "t_purchase_relation",
+    "className": "PurchaseRelation",
+    "moduleName": "purchaserelation",
+    "author": "wangxin",
+    "functionName": "采购路线",
+    "pk": {
+        "columnName": "id",
+        "columnComment": "采购路线id",
+        "columnType": "bigint",
+        "javaType": "Long",
+        "javaField": "id",
+        "jdbcType":"BIGINT"
+    },
+    "columns": [
+        {
+            "columnName": "material_code",
+            "columnComment": "物料号",
+            "columnType": "varchar",
+            "javaType": "String",
+            "javaField": "materialCode",
+            "jdbcType":"VARCHAR"
+        }
+    ]
+}
