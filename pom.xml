@@ -36,7 +36,11 @@
         <druid-spring-boot-starter.version>1.2.16</druid-spring-boot-starter.version>
         <mysql-connector-java.version>8.0.30</mysql-connector-java.version>
         <hutool.version>5.8.9</hutool.version>
-
+        <!--SpringCloud与Alibaba版本-->
+        <alibaba-cloud.version>2021.0.5.0</alibaba-cloud.version>
+        <springcloud.version>2021.0.6</springcloud.version>
+        <!--SpringBoot版本-->
+        <spring-boot.version>2.7.11</spring-boot.version>
     </properties>
 
     <dependencies>
@@ -49,7 +53,32 @@
 
     </dependencies>
     <dependencyManagement>
+
         <dependencies>
+            <!-- SpringBoot 依赖配置 -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!-- SpringCloud 依赖配置 -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${springcloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!-- SpringCloudAlibaba 依赖配置 -->
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${alibaba-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
             <!--mp主依赖-->
             <dependency>
                 <groupId>com.baomidou</groupId>
