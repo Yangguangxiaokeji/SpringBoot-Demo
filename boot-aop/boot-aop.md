@@ -1,6 +1,6 @@
 # boot-aop
 
-> 此 demo 展示在SpringBoot中如何使用异步进行编程
+> 此 demo 展示在SpringBoot中如何使用aop进行编程
 
 ## pom.xml
 

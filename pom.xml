@@ -13,6 +13,7 @@
     <groupId>com.foogui</groupId>
     <artifactId>SpringBoot-Demo</artifactId>
     <version>1.0-SNAPSHOT</version>
+
     <packaging>pom</packaging>
 
     <modules>
@@ -47,7 +48,7 @@
     <dependencies>
 
         <dependency>
-            <groupId>conm.foogui</groupId>
+            <groupId>com.foogui</groupId>
             <artifactId>common</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
