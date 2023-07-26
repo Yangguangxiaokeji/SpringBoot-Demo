@@ -1,0 +1,69 @@
+package ${packageName}.service;
+
+import com.faw.supplychain.common.model.PageResult;
+import ${packageName}.domain.${ClassName}PO;
+import ${packageName}.dto.${ClassName}DTO;
+import ${packageName}.vo.${ClassName}VO;
+#foreach ($column in $columns)
+#if($column.javaType =="Date")
+import java.util.Date;
+#end
+#end
+import java.util.List;
+
+/**
+ * ${functionName}Service接口
+ *
+ * @author ${author}
+ * @date ${datetime}
+ */
+public interface ${ClassName}Service {
+
+    /**
+     * 通过${pkColumn.javaField}查询单条数据
+     *
+     * @param ${pkColumn.javaField} 主键
+     * @return 实例对象
+     */
+     ${ClassName}PO queryById(${pkColumn.javaType} ${pkColumn.javaField});
+
+    /**
+     * 条件查询列表页
+     *
+     * @param condition 查询条件
+     * @return 查询结果
+     */
+      PageResult<${ClassName}VO> listByLikeCondition(${ClassName}DTO condition);
+
+    /**
+     * 新增数据
+     *
+     * @param ${className}PO 实例对象
+     * @return 影响行数
+     */
+     int insert(${ClassName}PO ${className}PO);
+
+    /**
+     * 修改数据
+     *
+     * @param  ${className}PO 实例对象
+     * @return 影响行数
+     */
+     int updateById(${ClassName}PO ${className}PO);
+
+    /**
+     * 批量删除
+     * 
+     * @param ${pkColumn.javaField}s 主键集合
+     * @return 影响行数
+     */
+     int deleteBatchByIds(List<${pkColumn.javaType}> ${pkColumn.javaField}s);
+
+    /**
+     * 通过主键删除数据
+     *
+     * @param ${pkColumn.javaField} 主键
+     * @return 影响行数
+     */
+    int deleteById(${pkColumn.javaType} ${pkColumn.javaField});
+}

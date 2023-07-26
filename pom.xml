@@ -17,6 +17,7 @@
 
     <modules>
         <module>boot-aop</module>
+        <module>generator</module>
         <!--<module>boot-quartz</module>-->
         <!--<module>boot-elasticsearch</module>-->
         <!--<module>boot-jdbctemplate</module>-->

@@ -1,0 +1,106 @@
+package ${packageName}.controller;
+
+import ${baseResultPath}.BaseResult;
+import ${pageResultPath}.PageResult;
+import ${packageName}.dto.${ClassName}DTO;
+import ${packageName}.service.${ClassName}Service;
+import ${packageName}.vo.${ClassName}VO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.util.CollectionUtils;
+import org.springframework.web.bind.annotation.*;
+#foreach ($column in $columns)
+    #if($column.javaType =="Date")
+    import java.util.Date;
+    #end
+#end
+import java.util.List;
+
+
+/**
+ * ${functionName}Controller
+ *
+ * @author ${author}
+ * @date ${datetime}
+ */
+@RestController
+@RequestMapping("/${className}")
+public class ${ClassName}Controller {
+
+    private static final Logger logger = LoggerFactory.getLogger(${ClassName}Controller.class);
+
+    @Autowired
+    private ${ClassName}Service ${className}Service;
+
+    /**
+     * 模糊查询${functionName}列表
+     *
+     * @param condition 查询条件
+     * @return 查询结果
+     */
+    @PostMapping("/listByCondition")
+    public BaseResult<PageResult<${ClassName}VO>> listByLikeCondition(@RequestBody ${ClassName}DTO condition) {
+        return BaseResult.success(${className}Service.listByLikeCondition(condition));
+    }
+
+
+    /**
+     * 通过主键查询单条数据
+     *
+     * @param ${pkColumn.javaField} 主键
+     * @return 单条数据
+     */
+    @PostMapping("/queryById/{id}")
+    public BaseResult<${ClassName}VO> queryById(@PathVariable("id") ${pkColumn.javaType} ${pkColumn.javaField}) {
+        return BaseResult.success(${className}Service.queryById(id).convert2VO());
+    }
+
+    /**
+     * 新增数据
+     * json中未传字段采用数据库设置的默认值填充
+     * @param ${className}DTO 实体数据
+     * @return 新增结果
+     */
+    @PostMapping("/insert")
+    public BaseResult<String> insert(@RequestBody ${ClassName}DTO ${className}DTO) {
+        return ${className}Service.insert(${className}DTO.convert2PO()) > 0 ? BaseResult.success("新增成功") : BaseResult.failed("新增失败");
+    }
+
+    /**
+     * 更新数据
+     * json中未传字段不进行修改
+     * @param ${className}DTO 实体
+     * @return 更新结果
+     */
+    @PostMapping("/update")
+    public BaseResult<String> updateById(@RequestBody ${ClassName}DTO ${className}DTO) {
+        return ${className}Service.updateById(${className}DTO.convert2PO()) > 0 ? BaseResult.success("修改成功") : BaseResult.failed("修改失败");
+    }
+
+    /**
+     * 删除数据
+     *
+     * @param id 主键
+     * @return 删除是否成功
+     */
+    @PostMapping("/delete/{id}")
+    public BaseResult<String> deleteById(@PathVariable("id") Long id) {
+        return ${className}Service.deleteById(id) > 0 ? BaseResult.success("删除成功") : BaseResult.failed("删除失败");
+    }
+
+    /**
+     * 批量删除数据
+     *
+     * @param ${className}DTO 实体
+     * @return 删除是否成功
+     */
+    @PostMapping("/deleteBatch")
+    public BaseResult<String> deleteBatch(@RequestBody ${ClassName}DTO ${className}DTO) {
+        List<Long> ids = ${className}DTO.getIds();
+        if (CollectionUtils.isEmpty(ids)) {
+            return BaseResult.failed("请选择数据");
+        }
+        return ${className}Service.deleteBatchByIds(ids) > 0 ? BaseResult.success("批量删除成功！") : BaseResult.failed("批量删除失败！");
+    }
+}

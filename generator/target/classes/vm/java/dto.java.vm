@@ -1,0 +1,50 @@
+package ${packageName}.dto;
+
+import ${pageRequestPath}.PageRequest;
+import ${packageName}.domain.${ClassName}PO;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.beans.BeanUtils;
+#foreach ($column in $columns)
+#if($column.javaType =="Date")
+import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonFormat;
+#end
+#end
+import java.io.Serializable;
+import java.util.List;
+
+
+/**
+ * ${functionName}(${ClassName})DTO类
+ *
+ * @author ${author}
+ * @date ${datetime}
+ */
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class ${ClassName}DTO extends PageRequest implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    private ${pkColumn.javaType} id;
+
+    private List<${pkColumn.javaType}> ids;
+
+#foreach ($column in $columns)
+    #if($column.javaType == "Date")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    #end
+    private $column.javaType $column.javaField;
+
+#end
+    public ${ClassName}PO convert2PO(){
+        ${ClassName}PO ${className}PO = new ${ClassName}PO();
+        BeanUtils.copyProperties(this, ${className}PO);
+        return ${className}PO;
+    }
+}
