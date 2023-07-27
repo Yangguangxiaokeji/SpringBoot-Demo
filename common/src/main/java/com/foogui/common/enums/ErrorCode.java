@@ -1,6 +1,11 @@
 package com.foogui.common.enums;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Stream;
 
 /**
  * http响应码
@@ -9,6 +14,7 @@ import lombok.Getter;
  * @date 2023/05/02
  */
 @Getter
+@AllArgsConstructor
 public enum ErrorCode {
 
     SUCCESS(200, "操作成功"),
@@ -43,9 +49,20 @@ public enum ErrorCode {
      */
     private final String message;
 
-    ErrorCode(int code, String message) {
-        this.code = code;
-        this.message = message;
+    /**
+     * 映射关系缓存
+     */
+    private final static Map<Integer, String> CODE_MAP;
+
+    static {
+        CODE_MAP = new HashMap<>();
+        Stream.of(ErrorCode.values()).forEach(o -> {
+            CODE_MAP.put(o.getCode(), o.getMessage());
+        });
+    }
+
+    public static String getMessageByCode(int code) {
+        return CODE_MAP.get(code);
     }
 
 

@@ -1,8 +1,12 @@
 package com.foogui.common.domain;
 
 import lombok.Data;
+import lombok.experimental.SuperBuilder;
 
 @Data
-public class DTO {
-    private String value;
+@SuperBuilder(toBuilder = true)
+public class DTO extends PageRequest{
+
+    private String condition;
+
 }
