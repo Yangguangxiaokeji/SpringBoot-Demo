@@ -19,7 +19,8 @@
 
     <modules>
         <module>boot-aop</module>
-        <module>generator</module>
+        <module>boot-easyexcel</module>
+        <module>boot-async</module>
         <!--<module>boot-quartz</module>-->
         <!--<module>boot-elasticsearch</module>-->
         <!--<module>boot-jdbctemplate</module>-->
