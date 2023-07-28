@@ -5,11 +5,14 @@ import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.excel.exception.ExcelDataConvertException;
 import com.alibaba.fastjson.JSON;
 import com.foogui.booteasyexcel.service.ExcelService;
+import com.foogui.booteasyexcel.valid.ExcelValid;
 import com.foogui.booteasyexcel.vo.ExcelDTO;
 import com.foogui.common.enums.ErrorCode;
 import com.foogui.common.exception.BizException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.compress.utils.Lists;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
@@ -20,6 +23,8 @@ import java.util.List;
  * @date 2023/03/28
  */
 @Slf4j
+@Component
+@Scope("prototype")
 public class ExcelImportListener extends AnalysisEventListener<ExcelDTO> {
 
     private ExcelService excelService;
@@ -37,6 +42,7 @@ public class ExcelImportListener extends AnalysisEventListener<ExcelDTO> {
      * @param context  上下文
      */
     @Override
+    @ExcelValid
     public void invoke(ExcelDTO excelDTO, AnalysisContext context) {
         log.info("解析到一条数据:{}", JSON.toJSONString(excelDTO));
 

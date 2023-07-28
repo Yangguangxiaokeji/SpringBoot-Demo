@@ -37,6 +37,9 @@ public class ExcelController {
     @Autowired
     private ExcelService excelService;
 
+    @Autowired
+    private ExcelImportListener excelImportListener;
+
     /**
      * 下载模板,动态生成,含下拉框
      *
@@ -101,7 +104,7 @@ public class ExcelController {
                     // 这个转换是成全局的， 所有java为string,excel为string的都会用这个转换器。
                     .registerConverter(new DateConverter())
                     // 注册监听器，可以在这里校验字段,这里注册监听器必须要new，或者让Spring接管Listener但是需要加@Scope("prototype")
-                    .registerReadListener(new ExcelImportListener(excelService))
+                    .registerReadListener(excelImportListener)
                     // 设置列头
                     .head(ExcelDTO.class)
                     // 设置标题所在行数
