@@ -161,7 +161,7 @@ public class SysLogController {
 
     @PostMapping("/test")
     @MyAOP("foogui")
-    public AjaxResult testAop(@RequestBody DTO dto){
+    public AjaxResult testAop(@RequestBody DTO dataDto){
         return AjaxResult.success("testAop测试成功");
     }
 

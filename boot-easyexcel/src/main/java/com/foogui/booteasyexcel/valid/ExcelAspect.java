@@ -45,7 +45,7 @@ public class ExcelAspect {
                 field.setAccessible(true);
                 injectMap.put(field.getName(), field);
             }
-            LocalCacheUtil.putCacheMap(className,injectMap);
+            LocalCacheUtil.setCacheMap(className,injectMap);
             cacheMap=injectMap;
         }
         cacheMap.values().forEach(field->{

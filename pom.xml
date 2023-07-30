@@ -21,6 +21,7 @@
         <module>boot-aop</module>
         <module>boot-easyexcel</module>
         <module>boot-async</module>
+        <module>boot-mybatisplus</module>
         <!--<module>boot-quartz</module>-->
         <!--<module>boot-elasticsearch</module>-->
         <!--<module>boot-jdbctemplate</module>-->

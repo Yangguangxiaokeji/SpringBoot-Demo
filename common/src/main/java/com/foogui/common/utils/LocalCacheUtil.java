@@ -26,7 +26,7 @@ public class LocalCacheUtil {
         return CACHE_MAP.getIfPresent(key);
     }
 
-    public static void putCacheMap(String key, Map<String, Object> map) {
+    public static void setCacheMap(String key, Map<String, Object> map) {
         CACHE_MAP.put(key, map);
     }
 
@@ -34,7 +34,7 @@ public class LocalCacheUtil {
         return CACHE_STRING.getIfPresent(key);
     }
 
-    public static void putCacheString(String key, String value) {
+    public static void setCacheString(String key, String value) {
         CACHE_STRING.put(key, value);
     }
 
