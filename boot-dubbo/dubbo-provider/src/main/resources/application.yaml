@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: account-provider
+  profiles:
+    active: dev
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+        namespace: 2815fa6d-e115-4732-bcb1-a44f0e7dc4c0
+server:
+  port: 7001
+
+dubbo:
+  application:
+    name: base
+  protocol:
+    name: dubbo
+    port: -1    # -1表示从 20880 开始的自增端口，避免重复
+  registry:
+    address: nacos://localhost:8848   #挂载到 nacos 注册中心
+  cloud:
+    subscribed-services: order-consumer    # 解决日志提示CPU占用问题，不写默认会被所有服务订阅
