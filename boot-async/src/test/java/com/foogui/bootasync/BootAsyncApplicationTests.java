@@ -1,5 +1,6 @@
 package com.foogui.bootasync;
 
+import com.foogui.bootasync.config.ExecutorConfigProperty;
 import com.foogui.bootasync.domain.Task;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,8 @@ class BootAsyncApplicationTests {
     @Qualifier("taskExecutor1")
     private ThreadPoolTaskExecutor threadPoolTaskExecutor;
 
+    @Autowired
+    private ExecutorConfigProperty executorConfigProperty;
     @Test
     public void test() throws Exception {
         long start = System.currentTimeMillis();
@@ -85,6 +88,12 @@ class BootAsyncApplicationTests {
 
         // AllOf：所有任务都执行完成后，才执行 allOf返回的CompletableFuture
         // AnyOf: 任意一个任务执行完，就执行anyOf返回的CompletableFuture
+    }
+
+    @Test
+    public void testProperty(){
+        System.out.println(executorConfigProperty.getCorePoolSize());
+        System.out.println(executorConfigProperty.getExcludeSet());
     }
 
 

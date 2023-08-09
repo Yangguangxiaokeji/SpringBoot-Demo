@@ -30,7 +30,7 @@ public class AsyncConfiguration implements AsyncConfigurer {
     private int maxPoolSize;
     @Value("${async.executor.thread.queue_capacity}")
     private int queueCapacity;
-    @Value("${async.executor.thread.name.prefix}")
+    @Value("${async.executor.thread.name_prefix}")
     private String namePrefix;
     @Value("${async.executor.thread.keep_alive_seconds}")
     private int keepAliveSeconds;
