@@ -8,13 +8,13 @@ public class AjaxResult {
 
     private String message;
 
-    private Object object;
+    private Object data;
 
-    public AjaxResult(int code, boolean success, String message, Object object) {
+    public AjaxResult(int code, boolean success, String message, Object data) {
         this.code = code;
         this.success = success;
         this.message = message;
-        this.object = object;
+        this.data = data;
     }
 
     public static AjaxResult success(int code, String message, Object object){
@@ -52,11 +52,11 @@ public class AjaxResult {
         this.message = message;
     }
 
-    public Object getObject() {
-        return object;
+    public Object getData() {
+        return data;
     }
 
-    public void setObject(Object object) {
-        this.object = object;
+    public void setData(Object data) {
+        this.data = data;
     }
 }

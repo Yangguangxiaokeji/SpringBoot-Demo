@@ -1,0 +1,2 @@
+# 自定义自动装配功能
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.foogui.common.CommonConfig

@@ -1,1 +1,1 @@
-com.foogui.common.handler.GlobalExceptionHandler
+com.foogui.common.utils.SpringBeanUtils
