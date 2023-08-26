@@ -1,0 +1,36 @@
+server:
+  port: 10086
+spring:
+  application:
+    name: rabbitmq
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    #  如果使用默认的主机，可以不写-virtualHost: /
+    virtualHost: /
+    # 开启交换机确认，确认交换机已经收到消息
+    publisher-confirm-type: correlated
+    # 开启队列确认，确认队列已经收到消息
+    publisher-returns: true
+    # RabbitMQ默认是自动确认，这里改为手动确认消息
+    listener:
+      simple:
+        acknowledge-mode: manual
+
+    # \u751F\u4EA7\u8005\u76F8\u5173\u914D\u7F6E\uFF0C\u4E0E\u6D88\u8D39\u8005\u65E0\u5173
+    template:
+      retry:
+        enabled: true
+        # \u7B2C\u4E00\u6B21\u91CD\u8BD5\u7684\u95F4\u9694\u65F6\u957F
+        initial-interval: 10000ms
+        # \u6700\u957F\u91CD\u8BD5\u95F4\u9694\uFF0C\u8D85\u8FC7\u8FD9\u4E2A\u95F4\u9694\u5C06\u4E0D\u518D\u91CD\u8BD5
+        max-interval: 300000ms
+        # \u4E0B\u6B21\u91CD\u8BD5\u95F4\u9694\u7684\u500D\u6570\uFF0C\u6B64\u5904\u662F2\u5373\u4E0B\u6B21\u91CD\u8BD5\u95F4\u9694\u662F\u4E0A\u6B21\u76842\u500D
+        multiplier: 2
+      # \u7F3A\u7701\u7684\u4EA4\u6362\u673A\u540D\u79F0
+      exchange: topic.exchange
+
+
+

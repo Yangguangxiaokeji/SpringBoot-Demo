@@ -17,6 +17,7 @@
         <module>boot-async</module>
         <module>boot-mybatisplus</module>
         <module>boot-dubbo</module>
+        <module>boot-rabbitmq</module>
         <!--<module>boot-quartz</module>-->
         <!--<module>boot-elasticsearch</module>-->
         <!--<module>boot-jdbctemplate</module>-->
