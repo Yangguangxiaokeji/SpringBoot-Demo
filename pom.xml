@@ -20,7 +20,7 @@
         <!--<module>boot-quartz</module>-->
         <!--<module>boot-elasticsearch</module>-->
         <!--<module>boot-jdbctemplate</module>-->
-        <!--<module>boot-event</module>-->
+        <module>boot-event</module>
         <!--<module>boot-redis</module>-->
     </modules>
 
