@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
  * @since 2023-04-01
  */
 @TableName("sys_user")
+
 public class SysUser implements Serializable {
 
     private static final long serialVersionUID = 1L;

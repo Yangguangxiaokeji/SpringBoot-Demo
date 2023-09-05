@@ -1,4 +1,4 @@
-package com.foogui.common.domain;
+package com.foogui.common.model.page;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,8 +12,8 @@ import java.util.List;
 /**
  * 分页结果
  *
- * @author Foogui
- * @date 2023/07/27
+ * @author wangxin
+ * @date 2023/09/04
  */
 @Data
 @Builder
@@ -21,16 +21,14 @@ import java.util.List;
 @NoArgsConstructor
 public class PageResult<T> implements Serializable {
 
-    private static final long serialVersionUID = 2315015017133819379L;
+    private static final long serialVersionUID = 6845513814060581181L;
 
     private List<T> data;
 
     private Long total;
 
-    private Integer  currentPage;
+    private Integer currentPage;
 
-    private Integer  pageSize;
-
-    private Boolean hasNextPage;
+    private Integer pageSize;
 
 }

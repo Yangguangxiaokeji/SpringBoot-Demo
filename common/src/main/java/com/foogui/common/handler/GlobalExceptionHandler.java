@@ -1,6 +1,6 @@
 package com.foogui.common.handler;
 
-import com.foogui.common.domain.Result;
+import com.foogui.common.model.Result;
 import com.foogui.common.exception.BizException;
 import com.sun.org.slf4j.internal.Logger;
 import com.sun.org.slf4j.internal.LoggerFactory;

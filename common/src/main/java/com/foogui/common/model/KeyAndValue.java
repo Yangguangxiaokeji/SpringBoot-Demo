@@ -1,4 +1,4 @@
-package com.foogui.common.domain;
+package com.foogui.common.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,6 +17,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class KeyAndValue<K, V> {
+
     private K key;
 
     private V value;
