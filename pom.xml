@@ -23,7 +23,7 @@
         <!--<module>boot-elasticsearch</module>-->
         <!--<module>boot-jdbctemplate</module>-->
         <module>boot-event</module>
-        <!--<module>boot-redis</module>-->
+        <module>boot-redis</module>
     </modules>
 
     <name>SpringBoot-Demo</name>
