@@ -1,5 +1,7 @@
 package com.foogui.boot.aop.annotation;
 
+import org.springframework.core.annotation.AliasFor;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -14,6 +16,7 @@ public @interface AopLock {
      * 锁的名字
      * @return {@link String}
      */
+    @AliasFor("expression")
     String lockName() default "";
 
     /**
@@ -33,4 +36,7 @@ public @interface AopLock {
      * @return {@link String}
      */
     String description() default "操作过于频繁，请重试";
+
+    @AliasFor("lockName")
+    String expression() default "";
 }
