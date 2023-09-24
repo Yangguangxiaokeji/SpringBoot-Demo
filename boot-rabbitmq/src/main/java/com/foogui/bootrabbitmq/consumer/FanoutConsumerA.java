@@ -1,11 +1,11 @@
 package com.foogui.bootrabbitmq.consumer;
 
 import com.foogui.bootrabbitmq.config.FanoutConfig;
+import com.foogui.bootrabbitmq.dto.Msg;
+import com.foogui.common.utils.JsonUtils;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
-
-import java.util.Map;
 
 
 /**
@@ -15,12 +15,13 @@ import java.util.Map;
  * @date 2023/07/07
  */
 @Component
-@RabbitListener(queues = FanoutConfig.FANOUT_A)//监听的队列名称 fanout.A
+@RabbitListener(queues = FanoutConfig.FANOUT_A)
 public class FanoutConsumerA {
 
     @RabbitHandler
-    public void process(Map map) {
-        System.out.println("FanoutReceiverA消费者收到消息  : " + map.toString());
+    public void process(String json) {
+        Msg msg = JsonUtils.toObject(json, Msg.class);
+        System.out.println("FanoutReceiverA消费者收到消息  : " + msg);
     }
 
 }

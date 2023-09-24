@@ -37,7 +37,12 @@ public class DirectConfig {
         return new DirectExchange(DIRECT_EXCHANGE,true,false);
     }
 
-    //绑定:将队列绑定到交换机, 并设置routingKey
+
+    /**
+     * 绑定exchange和queue
+     *
+     * @return {@link Binding}
+     */
     @Bean
     Binding bindingDirect() {
         return BindingBuilder.bind(directQueue()).to(directExchange()).with(DIRECT_ROUTING_KEY);

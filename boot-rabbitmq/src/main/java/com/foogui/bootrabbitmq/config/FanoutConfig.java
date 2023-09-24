@@ -18,14 +18,6 @@ public class FanoutConfig {
     public static final String FANOUT_A = "fanout.A";
     public static final String FANOUT_B = "fanout.B";
 
-
-    /**
-     *  创建2个队列 ：fanout.A   fanout.B
-     *  将2个队列都绑定在交换机 fanoutExchange 上
-     *  因为是扇型交换机
-     */
-
-
     @Bean
     public Queue queueA() {
         return new Queue(FANOUT_A);

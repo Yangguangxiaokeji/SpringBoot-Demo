@@ -1,12 +1,9 @@
 package com.foogui.bootrabbitmq.consumer;
 
 import com.foogui.bootrabbitmq.config.DirectConfig;
-import com.foogui.bootrabbitmq.dto.Msg;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
-
-import java.util.Map;
 
 
 /**
@@ -17,17 +14,17 @@ import java.util.Map;
  * @date 2023/07/07
  */
 @Component
-@RabbitListener(queues = DirectConfig.DIRECT_QUEUE)//监听的队列名称 TestDirectQueue
+@RabbitListener(queues = DirectConfig.DIRECT_QUEUE)
 public class DirectConsumer {
 
     /**
      * 生产者发送的消息是什么类型，这里就写什么类型，例如Map，String和自定义DTO等
      *
-     * @param msg 味精
+     * @param jsonMsg 味精
      */
     @RabbitHandler
-    public void process(Msg msg) {
-        System.out.println("DirectReceiver消费者收到消息  : " + msg.toString());
+    public void process(String jsonMsg) {
+        System.out.println("DirectReceiver消费者收到消息  : " + jsonMsg);
     }
 
 }

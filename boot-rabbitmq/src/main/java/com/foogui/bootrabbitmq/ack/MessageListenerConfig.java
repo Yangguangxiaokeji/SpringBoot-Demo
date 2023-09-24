@@ -25,7 +25,8 @@ public class MessageListenerConfig {
     /**
      * 简单消息监听器容器：
      * 在 AMQP 消息通道上注册 ChannelAwareMessageListener 并启动一个线程来监听消息通道。
-     * 当消息到达时，SimpleMessageListenerContainer 会自动调用相应的 ChannelAwareMessageListener 来处理消息
+     * 当消息到达时，SimpleMessageListenerContainer 会自动调用相应的 ChannelAwareMessageListener
+     * 来处理消息
      * @param connectionFactory 连接工厂
      * @return {@link SimpleMessageListenerContainer}
      */

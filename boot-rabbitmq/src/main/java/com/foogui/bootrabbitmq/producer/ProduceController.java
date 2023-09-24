@@ -5,21 +5,20 @@ import com.foogui.bootrabbitmq.config.DirectConfig;
 import com.foogui.bootrabbitmq.config.FanoutConfig;
 import com.foogui.bootrabbitmq.config.TopicConfig;
 import com.foogui.bootrabbitmq.dto.Msg;
-import lombok.Builder;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import com.foogui.bootrabbitmq.utils.RabbitHelper;
+import com.foogui.common.model.Result;
+import com.foogui.common.utils.JsonUtils;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.ReturnedMessage;
 import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.Serializable;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 
@@ -30,76 +29,75 @@ import java.util.UUID;
  * @date 2023/07/07
  */
 @RestController
-@RequiredArgsConstructor
 public class ProduceController {
 
 
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
-    // 标记为final并使用@NonNull注解
-    private final MyMessagePostProcessor myMessagePostProcessor;
+    @Autowired
+    private RabbitHelper rabbitHelper;
+
+    @Autowired
+    private MyMessagePostProcessor myMessagePostProcessor;
 
     @GetMapping("/sendDirectMessage")
-    public String sendDirectMessage() {
-        // Map<String, Object> map = createMessageMap();
-        Msg msg = buildMsg();
+    public Result<?> sendDirectMessage() {
+        String msg = buildMsg();
         rabbitTemplate.convertAndSend(DirectConfig.DIRECT_EXCHANGE, DirectConfig.DIRECT_ROUTING_KEY, msg);
-        return "ok";
+        return Result.success();
     }
-
 
 
     @GetMapping("/sendTopicMessage")
-    public String sendTopicMessage() {
-        Map<String, Object> map = createMessageMap();
-        rabbitTemplate.convertAndSend(TopicConfig.TOPIC_EXCHANGE, TopicConfig.ROUTING_KEY_FIRST, map);
-        return "ok";
+    public Result<?> sendTopicMessage() {
+        String msg = buildMsg();
+        rabbitTemplate.convertAndSend(TopicConfig.TOPIC_EXCHANGE, TopicConfig.ROUTING_KEY_FIRST, msg);
+        return Result.success();
     }
 
     @GetMapping("/sendFanoutMessage")
-    public String sendFanoutMessage() {
-        Map<String, Object> map = createMessageMap();
-        rabbitTemplate.convertAndSend(FanoutConfig.FANOUT_EXCHANGE, null, map);
-        return "ok";
+    public Result<?>  sendFanoutMessage() {
+        String msg = buildMsg();
+        // 对于fanout交换机，routingKey没有任何意义，因为不论是否设置了routingKey，交换机都会将消息推送到绑定的队列上
+        rabbitTemplate.convertAndSend(FanoutConfig.FANOUT_EXCHANGE, "", msg);
+        return Result.success();
     }
 
     @GetMapping("/testCallback")
-    public String testCallback() {
-        Map<String, Object> map = createMessageMap();
+    public Result<?> testCallback() {
+        String msg = buildMsg();
+
         // 新增消息关联类，通常携带消息的元数据标识消息
         CorrelationData correlationData = new CorrelationData();
-        correlationData.setId(UUID.randomUUID().toString());
+
+        Msg reMsg = JsonUtils.toObject(msg, Msg.class);
+        correlationData.setId(reMsg.getMessageId());
+
+        Message message = new Message(msg.getBytes(StandardCharsets.UTF_8));
+        correlationData.setReturned(new ReturnedMessage(message,200,"确定生产者已经发出了消息",DirectConfig.LONELY_DIRECT_EXCHANGE,"anyKey"));
 
         // 很明显会找不到绑定any的队列，会触发ReturnsCallback回调
-        rabbitTemplate.convertAndSend(DirectConfig.LONELY_DIRECT_EXCHANGE, "any", map, correlationData);
-        return "ok";
+        rabbitTemplate.convertAndSend(DirectConfig.LONELY_DIRECT_EXCHANGE, "anyKey", msg, correlationData);
+        return Result.success();
     }
 
     @GetMapping("/testMessagePostProcessor")
-    public String testMessagePostProcessor() {
-        Msg msg = buildMsg();
-        rabbitTemplate.convertAndSend(DirectConfig.DIRECT_EXCHANGE, DirectConfig.DIRECT_ROUTING_KEY, msg,myMessagePostProcessor);
-        return "ok";
+    public Result<?> testMessagePostProcessor() {
+        String msg = buildMsg();
+        rabbitTemplate.convertAndSend(DirectConfig.DIRECT_EXCHANGE, DirectConfig.DIRECT_ROUTING_KEY, msg, myMessagePostProcessor);
+        return Result.success();
     }
 
-    private Map<String, Object> createMessageMap() {
-        String messageId = String.valueOf(UUID.randomUUID());
-        String messageBody = "test message, hello!";
-        String createTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        Map<String, Object> map = new HashMap<>();
-        map.put("messageId", messageId);
-        map.put("messageBody", messageBody);
-        map.put("createTime", createTime);
-        return map;
-    }
 
-    private Msg buildMsg() {
+
+
+    private String buildMsg() {
         Msg msg = Msg.builder()
                 .messageId(UUID.randomUUID().toString())
-                .messageData("消息数据")
+                .messageData("消息测试数据")
                 .createTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
                 .build();
-        return msg;
+        return JsonUtils.toJson(msg);
     }
 }

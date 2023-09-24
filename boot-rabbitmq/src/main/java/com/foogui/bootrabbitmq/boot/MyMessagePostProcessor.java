@@ -1,16 +1,10 @@
 package com.foogui.bootrabbitmq.boot;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.AmqpException;
-import org.springframework.amqp.core.Correlation;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessagePostProcessor;
 import org.springframework.amqp.core.MessageProperties;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.nio.charset.StandardCharsets;
 
 /**
  * 将消息发送到 AMQP 消息通道之前对消息进行后处理。
@@ -22,9 +16,6 @@ import java.nio.charset.StandardCharsets;
 @Component
 public class MyMessagePostProcessor implements MessagePostProcessor {
 
-    @Autowired
-    private  ObjectMapper objectMapper;
-
     @Override
     public Message postProcessMessage(Message message) throws AmqpException {
         // 获取消息的元数据属性
@@ -34,6 +25,7 @@ public class MyMessagePostProcessor implements MessagePostProcessor {
 
         // 修改消息体
         byte[] body = message.getBody();
+        // TODO：String messageJsonBody = new String(body, StandardCharsets.UTF_8);
         // 可以对消息体进行对象转换然后进行修改
         return new Message(body, message.getMessageProperties());
     }
