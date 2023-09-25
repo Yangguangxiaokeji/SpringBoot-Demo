@@ -22,11 +22,11 @@ import java.util.function.Supplier;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class PageResult<R> implements Serializable {
+public class PageResult<T> implements Serializable {
 
     private static final long serialVersionUID = 6845513814060581181L;
 
-    private List<R> data;
+    private List<T> data;
 
     private Long total;
 
@@ -34,13 +34,13 @@ public class PageResult<R> implements Serializable {
 
     private Integer pageSize;
 
-    public <R> PageResult<R> getPageResult(int pageNum, int pageSize, Supplier<List<? extends R>> supplier) {
+    public <T> PageResult<T> getPageResult(int pageNum, int pageSize, Supplier<List<? extends T>> supplier) {
 
         PageHelper.startPage(pageNum, pageSize);
 
-        PageInfo<R> pageInfo = new PageInfo<>(supplier.get());
+        PageInfo<T> pageInfo = new PageInfo<>(supplier.get());
 
-        return PageResult.<R>builder()
+        return PageResult.<T>builder()
                 .data(pageInfo.getList())
                 .total(pageInfo.getTotal())
                 .currentPage(pageNum)
