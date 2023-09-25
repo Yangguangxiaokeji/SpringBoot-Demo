@@ -4,6 +4,7 @@ import com.foogui.bootrabbitmq.boot.MyMessagePostProcessor;
 import com.foogui.bootrabbitmq.config.DirectConfig;
 import com.foogui.bootrabbitmq.config.FanoutConfig;
 import com.foogui.bootrabbitmq.config.TopicConfig;
+import com.foogui.bootrabbitmq.consumer.NoBindingHandler;
 import com.foogui.bootrabbitmq.dto.Msg;
 import com.foogui.bootrabbitmq.utils.RabbitHelper;
 import com.foogui.common.model.Result;
@@ -86,6 +87,13 @@ public class ProduceController {
     public Result<?> testMessagePostProcessor() {
         String msg = buildMsg();
         rabbitTemplate.convertAndSend(DirectConfig.DIRECT_EXCHANGE, DirectConfig.DIRECT_ROUTING_KEY, msg, myMessagePostProcessor);
+        return Result.success();
+    }
+
+    @GetMapping("/testNoBindingHandler")
+    public Result<?> testNoBindingHandler() {
+        String msg = buildMsg();
+        rabbitHelper.send(NoBindingHandler.FANOUT_NO_BINDINGS_EXCHANGE, JsonUtils.toJson(msg));
         return Result.success();
     }
 

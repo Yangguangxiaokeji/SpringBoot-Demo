@@ -36,6 +36,7 @@ public class RabbitHelper {
         if (Objects.isNull(messageProperties)) {
             throw new IllegalStateException("messageProperties can not be null");
         }
+        // 如果未传id就默认uuid
         if (StringUtils.isBlank(messageProperties.getMessageId())) {
             messageProperties.setMessageId(UUID.randomUUID().toString());
         }
@@ -47,7 +48,7 @@ public class RabbitHelper {
         // 新增消息关联类，通常携带消息的元数据标识消息
         CorrelationData correlationData = new CorrelationData();
 
-        correlationData.setReturned(new ReturnedMessage(message,200,"确定生产者已经发出了消息", exchange,routingKey));
+        correlationData.setReturned(new ReturnedMessage(message, 200, "确定生产者已经发出了消息", exchange, routingKey));
 
         this.rabbitTemplate.send(exchange, routingKey, message, new CorrelationData(messageProperties.getMessageId()));
     }
