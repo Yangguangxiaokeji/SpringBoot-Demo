@@ -34,7 +34,7 @@ public class PageResult<T> implements Serializable {
 
     private Integer pageSize;
 
-    public <T> PageResult<T> getPageResult(int pageNum, int pageSize, Supplier<List<? extends T>> supplier) {
+    public PageResult<T> getPageResult(int pageNum, int pageSize, Supplier<List<T>> supplier) {
 
         PageHelper.startPage(pageNum, pageSize);
 
