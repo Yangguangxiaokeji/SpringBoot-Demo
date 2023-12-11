@@ -21,6 +21,7 @@ import javax.annotation.Resource;
 public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements SysUserService {
     @Resource
     private SysUserMapper sysUserMapper;
+
     @DS("slave_1")
     @Override
     public Object getByCondition(Long userId) {
