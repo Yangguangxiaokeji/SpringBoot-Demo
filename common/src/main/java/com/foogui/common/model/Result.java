@@ -26,7 +26,7 @@ public class Result<T> implements Serializable {
 
     private Boolean success;
 
-    private int code;
+    private Integer code;
 
     private String message;
 
