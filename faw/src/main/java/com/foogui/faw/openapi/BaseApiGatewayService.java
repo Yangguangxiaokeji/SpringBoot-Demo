@@ -24,6 +24,7 @@ public class BaseApiGatewayService {
     private UcgConfig ucgConfig;
 
 
+
     private static final String UCG_GET_TOKEN_URL = "/ucg/oauth/getToken";
 
     /**

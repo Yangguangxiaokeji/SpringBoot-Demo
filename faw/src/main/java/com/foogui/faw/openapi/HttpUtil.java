@@ -21,7 +21,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * http工具类
@@ -92,28 +91,6 @@ public class HttpUtil {
         return "";
     }
 
-    public static String sendPostNew(String url, String bodyJson, Map<String, String> headers) {
-        CloseableHttpClient client = httpClientBuilder.build();
-        HttpUriRequest post = RequestBuilder.post(url).setEntity(new StringEntity(bodyJson, ContentType.APPLICATION_JSON)).setConfig(requestConfig).build();
-        if (Objects.nonNull(headers) && !headers.isEmpty()) {
-            headers.forEach(post::addHeader);
-        }
-
-        HttpResponse response = null;
-
-        try {
-            log.info("sendPost.url:{}", post.getRequestLine());
-            response = client.execute(post);
-            String var6 = EntityUtils.toString(response.getEntity());
-            return var6;
-        } catch (IOException var10) {
-            var10.printStackTrace();
-        } finally {
-            HttpClientUtils.closeQuietly(response);
-        }
-
-        return "";
-    }
 
     private static String getFormParam(Map<String, String> map) {
         StringBuilder sb = new StringBuilder();
@@ -121,17 +98,14 @@ public class HttpUtil {
         return sb.substring(0, sb.length() - 1);
     }
 
-    private static String getFormParamFlow(Map<String, Object> map) {
-        StringBuilder sb = new StringBuilder();
-        map.forEach((k, v) -> sb.append(k).append("=").append(v).append("&"));
-        return sb.substring(0, sb.length() - 1);
-    }
+
 
     /**
      * GET请求
      *
      * @param url      请求地址
-     * @param paramMap 参数列表
+     * @param paramMap 请求参数列表
+     * @param headers  请求头参数列表
      * @return 响应json字符串
      */
     public static String sendGet(String url, Map<String, String> paramMap, Map<String, String> headers) {
@@ -170,6 +144,13 @@ public class HttpUtil {
         return "";
     }
 
+    /**
+     * POST 请求，和sendPost本质一样，只不过是参数Map形式不一样
+     * @param url
+     * @param params
+     * @param contentType
+     * @return
+     */
     public static String sendPostFlow(String url, Map<String, Object> params, ContentType contentType) {
 
         CloseableHttpClient client = HttpClients.createDefault();
@@ -210,6 +191,12 @@ public class HttpUtil {
         }
 
         return "";
+    }
+
+    private static String getFormParamFlow(Map<String, Object> map) {
+        StringBuilder sb = new StringBuilder();
+        map.forEach((k, v) -> sb.append(k).append("=").append(v).append("&"));
+        return sb.substring(0, sb.length() - 1);
     }
 }
 
